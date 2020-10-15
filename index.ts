@@ -15,7 +15,7 @@ interface Country {
   name: string;
 }
 
-const fakeContinentsRequest = keys =>
+const countriesRequest = keys =>
   ajax
     .getJSON<Country[]>(`https://restcountries.eu/rest/v2/name/${keys}`)
     .pipe(catchError(() => of([{ name: "No countries found" }])));
@@ -27,7 +27,7 @@ fromEvent(document.getElementById("type-ahead"), "keyup")
     filter(e => !!e),
     tap(console.log),
     distinctUntilChanged(),
-    switchMap(fakeContinentsRequest),
+    switchMap(countriesRequest),
     map(resp => resp.map(country => country.name)),
     tap(c => (document.getElementById("output").innerText = c.join("\n")))
   )
